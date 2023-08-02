@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="5dp"
+    app:cardElevation="20dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:background="#802C79B6"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtMaSV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="MSSV: N19DCCN216"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtHoTen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Họ tên: Nguyễn Thành Trung"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="@+id/txtMaSV"
+            app:layout_constraintTop_toBottomOf="@+id/txtMaSV" />
+        <TextView
+            android:id="@+id/txtMaLop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mã lớp: D19CQCN03"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="@+id/txtHoTen"
+            app:layout_constraintTop_toBottomOf="@+id/txtHoTen" />
+        <TextView
+            android:id="@+id/txtSBV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số buổi vắng: 4"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="@+id/txtMaLop"
+            app:layout_constraintTop_toBottomOf="@+id/txtMaLop" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
