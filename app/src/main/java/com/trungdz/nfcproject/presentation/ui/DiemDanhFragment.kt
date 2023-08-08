@@ -56,8 +56,8 @@ class DiemDanhFragment : Fragment() {
     private lateinit var binding: FragmentDiemDanhBinding
     private val viewModel: DiemDanhFragmentViewModel by viewModels()
     private val shareViewModel: ShareViewModel by activityViewModels()
-    lateinit var itemThongTinSinhVienDiemDanhAdapter: ThongTinSinhVienDiemDanhAdapter
-    val listFilterVang = arrayOf("Tất cả", "Vắng", "Có mặt", "Vắng có phép")
+     var itemThongTinSinhVienDiemDanhAdapter: ThongTinSinhVienDiemDanhAdapter?=null
+    val listFilterVang = arrayOf("Không lọc", "Vắng", "Có mặt", "Vắng có phép")
     var posAdapter = -1
     var selectedStatusVang = -1
 
@@ -77,6 +77,7 @@ class DiemDanhFragment : Fragment() {
     private fun setEvent() {
         binding.spnLTC.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
+                Log.d("Trung-DiemDanh","aaaa")
                 val list = viewModel.listLTC.value?.data?.list
                 list?.let {
                     if (it.isNotEmpty()) {
@@ -99,7 +100,11 @@ class DiemDanhFragment : Fragment() {
 //                if(list!!.isNotEmpty()){
                     if (pos == 0) {
                         viewModel.filterByVang = -1
-                        viewModel.layDanhSachDiemDanhSinhVienTheoTKB_LTC()
+//                        viewModel.layDanhSachDiemDanhSinhVienTheoTKB_LTC()
+                        if(itemThongTinSinhVienDiemDanhAdapter != null){
+                            (itemThongTinSinhVienDiemDanhAdapter?.itemList as ArrayList).clear()
+                            itemThongTinSinhVienDiemDanhAdapter?.notifyDataSetChanged()
+                        }
                     } else {
                         // pos - 1
                         viewModel.filterByVang = pos - 1
@@ -292,7 +297,9 @@ class DiemDanhFragment : Fragment() {
                 is Resource.Success -> {
                     it.data?.let { it2 ->
                         Toast.makeText(context, it2.message, Toast.LENGTH_SHORT).show()
-                        itemThongTinSinhVienDiemDanhAdapter.updateStatusVang(
+                        viewModel.xuatNgayHocVaTietHocCuaLTC(viewModel.maLTC)
+
+                        itemThongTinSinhVienDiemDanhAdapter?.updateStatusVang(
                             posAdapter,
                             selectedStatusVang
                         )
@@ -314,7 +321,7 @@ class DiemDanhFragment : Fragment() {
                 is Resource.Success -> {
                     it.data?.let { it2 ->
                         Toast.makeText(context, "${it2.message} ${it2.maSV}", Toast.LENGTH_SHORT).show()
-                        itemThongTinSinhVienDiemDanhAdapter.updateStatusDiemDanhThe(it2.maSV)
+                        itemThongTinSinhVienDiemDanhAdapter?.updateStatusDiemDanhThe(it2.maSV)
                     }
                 }
                 is Resource.Error -> Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
@@ -328,6 +335,7 @@ class DiemDanhFragment : Fragment() {
                 is Resource.Success -> {
                     it.data?.let { it2 ->
                         Toast.makeText(context, "${it2.message}", Toast.LENGTH_SHORT).show()
+                        viewModel.xuatNgayHocVaTietHocCuaLTC(viewModel.maLTC)
                     }
                 }
                 is Resource.Error -> Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()

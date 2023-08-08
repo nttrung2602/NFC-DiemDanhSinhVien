@@ -34,11 +34,11 @@ class NhacNhoFragmentViewModel @Inject constructor(val iRepository: IRepository)
         listLTC.postValue(response)
     }
 
-    fun xuatNgayHocVaTietHocCuaLTC(maLTC: Int) = viewModelScope.launch {
-        val response = iRepository.xuatNgayHocVaTietHocCuaLTCChuaChotDiemDanh(maLTC, true)
-
-        listNgayHocVaTietHoc.postValue(response)
-    }
+//    fun xuatNgayHocVaTietHocCuaLTC(maLTC: Int) = viewModelScope.launch {
+//        val response = iRepository.xuatNgayHocVaTietHocCuaLTCChuaChotDiemDanh(maLTC, true)
+//
+//        listNgayHocVaTietHoc.postValue(response)
+//    }
 
     fun locTopSoLuongSinhVienVangNhieu(soLuong: Int = 10) = viewModelScope.launch {
         val response = iRepository.locTopSoLuongSinhVienVangNhieu(maLTC, soLuong)

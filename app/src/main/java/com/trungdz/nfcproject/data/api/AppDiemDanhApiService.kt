@@ -1,11 +1,9 @@
 package com.trungdz.nfcproject.data.api
 
-import com.trungdz.nfcproject.data.model.dto.ThongTinDiemDanhSVLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinLTCTheoMAGV
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienDangKyLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienNhacNho
+import com.trungdz.nfcproject.data.model.dto.*
 import com.trungdz.nfcproject.data.model.request.CapNhatTheDiemDanhRequest
 import com.trungdz.nfcproject.data.model.request.LTCTheoMaGVRequest
+import com.trungdz.nfcproject.data.model.request.LoginGiangVienRequest
 import com.trungdz.nfcproject.data.model.request.ThongTinTheDiemDanhRequest
 import com.trungdz.nfcproject.data.model.response.*
 import retrofit2.Response
@@ -16,8 +14,8 @@ import retrofit2.http.Query
 
 interface AppDiemDanhApiService {
     // Define endpoint here
-    @POST("giangvien/auth")
-    suspend fun authenticateGiangVien(@Query("magv") maGV: Int): Response<MessageResponse>
+    @POST("auth/giangvien")
+    suspend fun authenticateGiangVien(@Body loginGiangVienRequest: LoginGiangVienRequest): Response<LoginResponse>
 
     // LTC
     @POST("ltc/giangvien")
@@ -25,8 +23,7 @@ interface AppDiemDanhApiService {
 
     @GET("ltc/thongtinbuoihocltc")
     suspend fun xuatNgayHocVaTietHocCuaMotLTC(
-        @Query("maltc") maLTC: Int,
-        @Query("chotdiemdanh") chotDiemDanh: Boolean = false
+        @Query("maltc") maLTC: Int, @Query("chotdiemdanh") chotDiemDanh: Boolean = false
     ): Response<NgayHocVaTietHocListResponse>
 
     @GET("ltc/thongtinsinhvien")
@@ -35,6 +32,11 @@ interface AppDiemDanhApiService {
         @Query("filterbymssv") filterByMSSV: String = "",
         @Query("trangthaithediemdanh") trangThaiTheDiemDanh: Boolean = true
     ): Response<DataListResponse<ThongTinSinhVienDangKyLTC>>
+
+    @GET("ltc/nhacnhosinhvien/chitiet")
+    suspend fun layChiTietBuoiHocVangCuaSinhVien(
+        @Query("maltc") maLTC: Int, @Query("masv") maSV: String
+    ): Response<DataListResponse<ChiTietBuoiVang>>
 
     @GET("ltc/diemdanh")
     suspend fun layDanhSachDiemDanhSinhVienTheoTKB_LTC(
@@ -47,8 +49,7 @@ interface AppDiemDanhApiService {
 
     @GET("ltc/nhacnhosinhvien")
     suspend fun locTopSoLuongSinhVienVangNhieu(
-        @Query("maltc") maLTC: Int,
-        @Query("soluong") soLuong: Int
+        @Query("maltc") maLTC: Int, @Query("soluong") soLuong: Int
     ): Response<DataListResponse<ThongTinSinhVienNhacNho>>
 
     @POST("ltc/giangvien/chotdiemdanh")
@@ -79,8 +80,7 @@ interface AppDiemDanhApiService {
 
     @POST("dangky/thediemdanh/huy")
     suspend fun huyTheDiemDanh(
-        @Query("maltc") maLTC: Int,
-        @Query("masv") maSV: String?
+        @Query("maltc") maLTC: Int, @Query("masv") maSV: String?
     ): Response<MessageResponse>
 
     @POST("dangky/diemdanh/thucong")

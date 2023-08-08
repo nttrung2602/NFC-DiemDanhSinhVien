@@ -6,87 +6,99 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.MainActivity">
 
-    <EditText
-        android:id="@+id/editMaGV"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:hint="Nhập mã giảng viên"
-        android:inputType="number"
-        android:text="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnXacNhan"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:background="#CC2196F3"
-        android:text="Xác nhận"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/editMaGV"
-        app:layout_constraintStart_toEndOf="@+id/editMaGV"
-        app:layout_constraintTop_toTopOf="@+id/editMaGV"
-        app:layout_constraintVertical_bias="0.333" />
-
-    <HorizontalScrollView
-        android:id="@+id/groupButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/groupView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="5dp"
-        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editMaGV">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_gravity="center_horizontal"
+        <TextView
+            android:id="@+id/txtTenGV"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Giảng viên: Nguyễn Ngọc Duy"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDangXuat"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:orientation="horizontal">
+            android:layout_marginEnd="10dp"
+            android:background="#B3F44336"
+            android:text="Đăng xuất"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/txtTenGV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txtTenGV"
+            app:layout_constraintVertical_bias="1.0" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnDangKy"
+        <HorizontalScrollView
+            android:id="@+id/groupButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTenGV">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#CC2196F3"
-                android:text="Đăng ký"
-                android:textColor="#ffffff" />
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnDiemDanh"
-                android:layout_width="wrap_content"
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnDangKy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#CC2196F3"
+                    android:text="Đăng ký"
+                    android:textColor="#ffffff" />
 
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:background="#CC2196F3"
-                android:text="Điểm danh"
-                android:textColor="#ffffff" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnDiemDanh"
+                    android:layout_width="wrap_content"
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnLichSu"
-                android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="#CC2196F3"
+                    android:text="Điểm danh"
+                    android:textColor="#ffffff" />
 
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:background="#CC2196F3"
-                android:text="Lịch sử ĐD"
-                android:textColor="#ffffff" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnLichSu"
+                    android:layout_width="wrap_content"
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnNhacNho"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="#CC2196F3"
+                    android:text="Lịch sử ĐD"
+                    android:textColor="#ffffff" />
 
-                android:layout_height="wrap_content"
-                android:background="#CC2196F3"
-                android:text="Nhắc nhở"
-                android:textColor="#ffffff" />
-        </LinearLayout>
-    </HorizontalScrollView>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnNhacNho"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="5dp"
+                    android:background="#CC2196F3"
+                    android:text="Nhắc nhở"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <FrameLayout
         android:id="@+id/containerFragment"
@@ -95,7 +107,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupButton" />
+        app:layout_constraintTop_toBottomOf="@+id/groupView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

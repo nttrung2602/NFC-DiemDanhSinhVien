@@ -50,7 +50,7 @@ class LichSuDiemDanhFragmentViewModel @Inject constructor(private val iRepositor
     }
 
     fun layDanhSachDiemDanhSinhVienTheoTKB_LTC() = viewModelScope.launch {
-        if (ngayHoc != "" && tietHoc != "") {
+        if (ngayHoc != "" && tietHoc != "" && filterByVang != -1) {
 
             val response = iRepository.layDanhSachDiemDanhSinhVienTheoTKB_LTC(
                 maLTC, ngayHoc, tietHoc, filterByName, filterByVang
@@ -59,9 +59,10 @@ class LichSuDiemDanhFragmentViewModel @Inject constructor(private val iRepositor
             listThongTinSinhVienDangKyLTC.postValue(response)
             ghiChuResponse.postValue(response1)
 
-        } else {
-            listThongTinSinhVienDangKyLTC.postValue(Resource.Error(message = "Chưa thể tải danh sách điểm danh. Thử lại sau!"))
         }
+//        else {
+//            listThongTinSinhVienDangKyLTC.postValue(Resource.Error(message = "Chưa thể tải danh sách điểm danh. Thử lại sau!"))
+//        }
     }
 
     fun diemDanhThuCong(maSV: String, statusVang: Int) = viewModelScope.launch {

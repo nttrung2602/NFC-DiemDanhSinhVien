@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ShareViewModel @Inject constructor(private val iRepository: IRepository) : ViewModel() {
 
-    val messageAuthResponse: MutableLiveData<Resource<MessageResponse>> = MutableLiveData()
+//    val messageAuthResponse: MutableLiveData<Resource<MessageResponse>> = MutableLiveData()
     val messageDangKyResponse: MutableLiveData<Resource<MessageResponse>> = MutableLiveData()
     val messageDiemDanhTheResponse: MutableLiveData<Resource<DiemDanhTheResponse>> = MutableLiveData()
 
@@ -30,11 +30,11 @@ class ShareViewModel @Inject constructor(private val iRepository: IRepository) :
         this.tietHoc = null
     }
 
-    fun xacThucGiangVien(maGV: Int) = viewModelScope.launch {
-
-        val response = iRepository.xacThucGiangVien(maGV)
-        messageAuthResponse.postValue(response)
-    }
+//    fun xacThucGiangVien(maGV: Int) = viewModelScope.launch {
+//
+//        val response = iRepository.xacThucGiangVien(maGV,)
+//        messageAuthResponse.postValue(response)
+//    }
 
     fun capNhatTheDiemDanh(theDiemDanh: String) = viewModelScope.launch {
         if (maSV != null && ngayHoc != null && tietHoc != null) {

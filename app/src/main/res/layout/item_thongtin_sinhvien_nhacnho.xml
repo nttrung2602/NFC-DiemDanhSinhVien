@@ -49,5 +49,19 @@
             app:layout_constraintStart_toStartOf="@+id/txtMaLop"
             app:layout_constraintTop_toBottomOf="@+id/txtMaLop" />
 
+        <TextView
+            android:id="@+id/btnChiTiet"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/radius_button"
+            android:backgroundTint="#2196F3"
+            android:gravity="center"
+            android:padding="7dp"
+            android:text="Chi tiết"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

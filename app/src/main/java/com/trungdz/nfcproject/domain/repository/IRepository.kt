@@ -1,20 +1,14 @@
 package com.trungdz.nfcproject.domain.repository
 
-import com.trungdz.nfcproject.data.model.dto.ThongTinDiemDanhSVLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinLTCTheoMAGV
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienDangKyLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienNhacNho
+import com.trungdz.nfcproject.data.model.dto.*
 import com.trungdz.nfcproject.data.model.response.*
 import com.trungdz.nfcproject.data.ulti.Resource
-import retrofit2.Response
-import retrofit2.http.POST
-import retrofit2.http.Query
 
 
 interface IRepository {
 
     // GiangVien
-    suspend fun xacThucGiangVien(maGV: Int): Resource<MessageResponse>
+    suspend fun xacThucGiangVien(maGV: String,password:String): Resource<LoginResponse>
     suspend fun xuatLopTinChiTheoMaGV(maGV: Int): Resource<DataListResponse<ThongTinLTCTheoMAGV>>
     suspend fun xuatNgayHocVaTietHocCuaLTCChuaChotDiemDanh(
         maLTC: Int,
@@ -27,6 +21,7 @@ interface IRepository {
         trangThaiTheDiemDanh: Boolean = true
     ): Resource<DataListResponse<ThongTinSinhVienDangKyLTC>>
 
+    suspend fun layChiTietBuoiHocVangCuaSinhVien(maLTC: Int,maSV: String):Resource<DataListResponse<ChiTietBuoiVang>>
     suspend fun layDanhSachDiemDanhSinhVienTheoTKB_LTC(
         maLTC: Int,
         ngayHoc: String,

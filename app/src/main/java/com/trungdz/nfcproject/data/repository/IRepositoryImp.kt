@@ -1,10 +1,7 @@
 package com.trungdz.nfcproject.data.repository
 
 import com.google.gson.GsonBuilder
-import com.trungdz.nfcproject.data.model.dto.ThongTinDiemDanhSVLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinLTCTheoMAGV
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienDangKyLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienNhacNho
+import com.trungdz.nfcproject.data.model.dto.*
 import com.trungdz.nfcproject.data.model.response.*
 import com.trungdz.nfcproject.data.repository.datasource.AppDiemDanhRemoteDatasource
 import com.trungdz.nfcproject.data.ulti.Resource
@@ -15,11 +12,11 @@ import javax.inject.Inject
 
 class IRepositoryImp @Inject constructor(private val appDiemDanhRemoteDatasource: AppDiemDanhRemoteDatasource) :
     IRepository {
-    override suspend fun xacThucGiangVien(maGV: Int): Resource<MessageResponse> {
-        return responseToXacThucGiangVien(appDiemDanhRemoteDatasource.xacThucGiangVien(maGV))
+    override suspend fun xacThucGiangVien(maGV: String, password: String): Resource<LoginResponse> {
+        return responseToXacThucGiangVien(appDiemDanhRemoteDatasource.xacThucGiangVien(maGV,password))
     }
 
-    private fun responseToXacThucGiangVien(response: Response<MessageResponse>): Resource<MessageResponse> {
+    private fun responseToXacThucGiangVien(response: Response<LoginResponse>): Resource<LoginResponse> {
         if (response.isSuccessful)
             response.body()?.let {
                 return Resource.Success(it)
@@ -53,6 +50,19 @@ class IRepositoryImp @Inject constructor(private val appDiemDanhRemoteDatasource
                 chotDiemDanh
             )
         )
+    }
+
+    override suspend fun layChiTietBuoiHocVangCuaSinhVien(
+        maLTC: Int,
+        maSV: String
+    ): Resource<DataListResponse<ChiTietBuoiVang>> {
+        return responseToLayChiTietBuoiHocVangCuaSinhVien(appDiemDanhRemoteDatasource.layChiTietBuoiHocVangCuaSinhVien(maLTC, maSV))
+    }
+
+    private fun responseToLayChiTietBuoiHocVangCuaSinhVien(response: Response<DataListResponse<ChiTietBuoiVang>>):Resource<DataListResponse<ChiTietBuoiVang>>{
+        if(response.isSuccessful)
+            response.body()?.let { return Resource.Success(it) }
+        return Resource.Error(message = errorMessage(response.errorBody()?.string()))
     }
 
     private fun responseToXuatNgayHocVaTietHocCuaLTCChuaChotDiemDanh(response: Response<NgayHocVaTietHocListResponse>): Resource<NgayHocVaTietHocListResponse> {

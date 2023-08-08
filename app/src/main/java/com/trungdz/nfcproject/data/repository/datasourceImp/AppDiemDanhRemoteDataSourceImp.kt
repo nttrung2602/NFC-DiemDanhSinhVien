@@ -2,12 +2,10 @@ package com.trungdz.nfcproject.data.repository.datasourceImp
 
 
 import com.trungdz.nfcproject.data.api.AppDiemDanhApiService
-import com.trungdz.nfcproject.data.model.dto.ThongTinDiemDanhSVLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinLTCTheoMAGV
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienDangKyLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienNhacNho
+import com.trungdz.nfcproject.data.model.dto.*
 import com.trungdz.nfcproject.data.model.request.CapNhatTheDiemDanhRequest
 import com.trungdz.nfcproject.data.model.request.LTCTheoMaGVRequest
+import com.trungdz.nfcproject.data.model.request.LoginGiangVienRequest
 import com.trungdz.nfcproject.data.model.request.ThongTinTheDiemDanhRequest
 import com.trungdz.nfcproject.data.model.response.*
 import com.trungdz.nfcproject.data.repository.datasource.AppDiemDanhRemoteDatasource
@@ -16,8 +14,8 @@ import javax.inject.Inject
 
 class AppDiemDanhRemoteDataSourceImp @Inject constructor(private val appDiemDanhApiService: AppDiemDanhApiService) :
     AppDiemDanhRemoteDatasource {
-    override suspend fun xacThucGiangVien(maGV: Int): Response<MessageResponse> {
-        return appDiemDanhApiService.authenticateGiangVien(maGV)
+    override suspend fun xacThucGiangVien(maGV: String, password: String): Response<LoginResponse> {
+        return appDiemDanhApiService.authenticateGiangVien(LoginGiangVienRequest(maGV,password))
     }
 
     override suspend fun xuatLopTinChiTheoMaGV(maGV: Int): Response<DataListResponse<ThongTinLTCTheoMAGV>> {
@@ -38,6 +36,12 @@ class AppDiemDanhRemoteDataSourceImp @Inject constructor(private val appDiemDanh
         )
     }
 
+    override suspend fun layChiTietBuoiHocVangCuaSinhVien(
+        maLTC: Int,
+        maSV: String
+    ): Response<DataListResponse<ChiTietBuoiVang>> {
+        return appDiemDanhApiService.layChiTietBuoiHocVangCuaSinhVien(maLTC, maSV)
+    }
     override suspend fun layDanhSachDiemDanhSinhVienTheoTKB_LTC(
         maLTC: Int, ngayHoc: String, tietHoc: String, filterByName: String, filterByVang: Int
     ): Response<DataListResponse<ThongTinDiemDanhSVLTC>> {

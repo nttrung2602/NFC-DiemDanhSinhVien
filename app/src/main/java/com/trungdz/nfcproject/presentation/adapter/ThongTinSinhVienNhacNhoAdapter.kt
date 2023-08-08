@@ -6,8 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienNhacNho
 import com.trungdz.nfcproject.databinding.ItemThongtinSinhvienNhacnhoBinding
 
-class ThongTinSinhVienNhacNhoAdapter(val itemList: List<ThongTinSinhVienNhacNho>) :
+class ThongTinSinhVienNhacNhoAdapter(
+    val itemList: List<ThongTinSinhVienNhacNho>,
+    val listener: Listener
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    interface Listener {
+        fun onClick(item: ThongTinSinhVienNhacNho, position: Int)
+    }
 
     inner class ItemHolder(val binding: ItemThongtinSinhvienNhacnhoBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -16,6 +23,10 @@ class ThongTinSinhVienNhacNhoAdapter(val itemList: List<ThongTinSinhVienNhacNho>
             binding.txtMaLop.text = "Mã lớp: ${item.maLop}"
             binding.txtMaSV.text = "MSSV: ${item.maSV}"
             binding.txtSBV.text = "Số buổi vắng: ${item.soBuoiVang}"
+
+            binding.btnChiTiet.setOnClickListener {
+                listener.onClick(itemList[adapterPosition],adapterPosition) 
+            }
         }
     }
 
@@ -34,4 +45,5 @@ class ThongTinSinhVienNhacNhoAdapter(val itemList: List<ThongTinSinhVienNhacNho>
             holder.bind(item)
         }
     }
+
 }

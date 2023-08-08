@@ -76,7 +76,7 @@
             android:background="@drawable/btn_corner"
             android:backgroundTint="#FABC03"
             android:padding="5dp"
-            android:text="Điểm danh còn lại"
+            android:text="Điểm danh tất cả"
             android:textColor="#ffffff"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"

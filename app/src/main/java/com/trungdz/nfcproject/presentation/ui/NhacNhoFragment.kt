@@ -8,14 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.trungdz.nfcproject.R
+import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienNhacNho
 import com.trungdz.nfcproject.data.ulti.Resource
 import com.trungdz.nfcproject.databinding.FragmentNhacNhoBinding
 import com.trungdz.nfcproject.presentation.adapter.ThongTinSinhVienDiemDanhAdapter
 import com.trungdz.nfcproject.presentation.adapter.ThongTinSinhVienNhacNhoAdapter
+import com.trungdz.nfcproject.presentation.util.ItemMenuTag
 import com.trungdz.nfcproject.presentation.viewmodel.NhacNhoFragmentViewModel
 import com.trungdz.nfcproject.presentation.viewmodel.ShareViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,14 +61,15 @@ class NhacNhoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentNhacNhoBinding.bind(view)
-        shareViewModel.resetViewModel()
+            binding = FragmentNhacNhoBinding.bind(view)
+            shareViewModel.resetViewModel()
 
-        setObserver()
-        setEvent()
-        val maGV = (activity as MainActivity).maGV
-        viewModel.xuatLopTinChiTheoMaGV(maGV)
-        viewModel.maGV = maGV
+            setObserver()
+            setEvent()
+            val maGV = (activity as MainActivity).maGV
+            viewModel.xuatLopTinChiTheoMaGV(maGV)
+            viewModel.maGV = maGV
+
     }
 
     private fun setEvent() {
@@ -127,7 +131,18 @@ class NhacNhoFragment : Fragment() {
                         val itemList = it2.list
 
                         itemThongTinSinhVienNhacNhoAdapter =
-                            ThongTinSinhVienNhacNhoAdapter(itemList)
+                            ThongTinSinhVienNhacNhoAdapter(itemList,object : ThongTinSinhVienNhacNhoAdapter.Listener{
+                                override fun onClick(item: ThongTinSinhVienNhacNho, position: Int) {
+                                    // open new screen
+                                    //
+                                    val activity=(activity as MainActivity)
+                                    activity.makeDisplayFullScreen(true)
+                                    val bundle= bundleOf("maLTC" to viewModel.maLTC, "maSV" to item.maSV)
+                                    val fragment=ChiTietBuoiVangFragment()
+                                    fragment.arguments=bundle
+                                    activity.navigateFragmentAddToBackStack(fragment,ItemMenuTag.ID_CHITIETBUOIVANG_FRAGMENT)
+                                }
+                            })
 
                         binding.recyclerThongTinSinhVien.adapter =
                             itemThongTinSinhVienNhacNhoAdapter

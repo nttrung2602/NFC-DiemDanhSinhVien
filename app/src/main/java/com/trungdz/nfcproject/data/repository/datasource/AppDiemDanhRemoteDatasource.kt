@@ -1,21 +1,19 @@
 package com.trungdz.nfcproject.data.repository.datasource
 
-import com.trungdz.nfcproject.data.model.dto.ThongTinDiemDanhSVLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinLTCTheoMAGV
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienDangKyLTC
-import com.trungdz.nfcproject.data.model.dto.ThongTinSinhVienNhacNho
+import com.trungdz.nfcproject.data.model.dto.*
 import com.trungdz.nfcproject.data.model.response.*
 import retrofit2.Response
 
 interface AppDiemDanhRemoteDatasource {
 
-    suspend fun xacThucGiangVien(maGV: Int): Response<MessageResponse>
+    suspend fun xacThucGiangVien(maGV: String,password:String): Response<LoginResponse>
     suspend fun xuatLopTinChiTheoMaGV(maGV: Int): Response<DataListResponse<ThongTinLTCTheoMAGV>>
     suspend fun xuatNgayHocVaTietHocCuaLTCChuaChotDiemDanh(
         maLTC: Int,
         chotDiemDanh: Boolean = false
     ): Response<NgayHocVaTietHocListResponse>
 
+    suspend fun layChiTietBuoiHocVangCuaSinhVien(maLTC: Int,maSV: String):Response<DataListResponse<ChiTietBuoiVang>>
     suspend fun xuatThongTinTatCaSinhVienCuaLTC(
         maLTC: Int,
         filterByMSSV: String = "",

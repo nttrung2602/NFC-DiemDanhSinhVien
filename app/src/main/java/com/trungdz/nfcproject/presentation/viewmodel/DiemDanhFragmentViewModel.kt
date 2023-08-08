@@ -27,6 +27,7 @@ class DiemDanhFragmentViewModel @Inject constructor(private val iRepository: IRe
         MutableLiveData()
     val messageDiemDanhResponse: MutableLiveData<Resource<MessageResponse>> = MutableLiveData()
     val messageChotDiemDanhResponse: MutableLiveData<Resource<MessageResponse>> = MutableLiveData()
+
     //
     var ngayHoc: String = ""
     var tietHoc: String = ""
@@ -48,16 +49,17 @@ class DiemDanhFragmentViewModel @Inject constructor(private val iRepository: IRe
     }
 
     fun layDanhSachDiemDanhSinhVienTheoTKB_LTC() = viewModelScope.launch {
-        if(ngayHoc != "" && tietHoc != ""){
+        if (ngayHoc != "" && tietHoc != "" && filterByVang != -1) {
             val response = iRepository.layDanhSachDiemDanhSinhVienTheoTKB_LTC(
                 maLTC, ngayHoc, tietHoc, filterByName, filterByVang
             )
             listThongTinSinhVienDangKyLTC.postValue(response)
 
 
-        }else{
-            listThongTinSinhVienDangKyLTC.postValue(Resource.Error(message = "Chưa thể tải danh sách điểm danh. Thử lại sau!"))
         }
+//        else {
+//            listThongTinSinhVienDangKyLTC.postValue(Resource.Error(message = "Chưa thể tải danh sách điểm danh. Thử lại sau!"))
+//        }
     }
 
     fun diemDanhThuCong(maSV: String, statusVang: Int) = viewModelScope.launch {

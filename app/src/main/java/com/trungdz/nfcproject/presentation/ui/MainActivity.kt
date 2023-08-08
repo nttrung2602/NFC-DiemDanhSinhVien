@@ -1,6 +1,7 @@
 package com.trungdz.nfcproject.presentation.ui
 
 import android.app.PendingIntent
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
@@ -8,25 +9,22 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.*
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.trungdz.nfcproject.R
-import com.trungdz.nfcproject.data.ulti.Resource
 import com.trungdz.nfcproject.databinding.ActivityMainBinding
 import com.trungdz.nfcproject.presentation.util.ItemMenuTag
-import com.trungdz.nfcproject.presentation.viewmodel.DangKyFragmentViewModel
 import com.trungdz.nfcproject.presentation.viewmodel.ShareViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private val viewModel: ShareViewModel by viewModels()
     lateinit var mNfcAdapter: NfcAdapter
     var maGV: Int = -1;
@@ -71,45 +69,34 @@ class MainActivity : AppCompatActivity() {
 //        handleIntent(intent)
 
         // Start coding here
-        setItemMenu(false)
         setEvent()
-        setObserver()
 
+        makeDisplayFullScreen(true)
+        navigateFragment(LoginFragment(), ItemMenuTag.ID_DANGNHAP_FRAGMENT)
     }
 
+    fun setTextTenGV(s: String) {
+        binding.txtTenGV.text = "Giảng viên: $s"
+    }
 
     private fun setEvent() {
-        binding.editMaGV.doOnTextChanged { text, _, _, _ ->
-            if (text.toString().isEmpty()) {
-                binding.btnXacNhan.isEnabled = false
-                binding.btnXacNhan.setBackgroundColor(Color.parseColor("#CC727578"))
-            } else {
-                binding.btnXacNhan.isEnabled = true
-                binding.btnXacNhan.setBackgroundColor(Color.parseColor("#CC2196F3"))
-            }
-
-        }
-        binding.btnXacNhan.setOnClickListener {
-            if (binding.btnXacNhan.text.toString().uppercase() == "XÁC NHẬN") {
-                val maGV = binding.editMaGV.text
-                    .toString().toInt()
-                viewModel.xacThucGiangVien(maGV)
-            } else {
-                resetUI()
-            }
+        binding.btnDangXuat.setOnClickListener {
+            makeDisplayFullScreen(true)
+            resetUI()
+            navigateFragment(LoginFragment(), ItemMenuTag.ID_DANGNHAP_FRAGMENT)
         }
 
         binding.btnDangKy.setOnClickListener {
-            binding.btnDangKy.setBackgroundColor(Color.parseColor("#FF9800"))
             resetSelectorItemMenu(oldPos)
+            binding.btnDangKy.setBackgroundColor(Color.parseColor("#FF9800"))
             oldPos = ItemMenuTag.ITEM_DANGKY
             currentTag = ItemMenuTag.ID_DANGKY_FRAGMENT
             navigateFragment(DangKyFragment(), currentTag)
         }
 
         binding.btnDiemDanh.setOnClickListener {
-            binding.btnDiemDanh.setBackgroundColor(Color.parseColor("#FF9800"))
             resetSelectorItemMenu(oldPos)
+            binding.btnDiemDanh.setBackgroundColor(Color.parseColor("#FF9800"))
             oldPos = ItemMenuTag.ITEM_DIEMDANH
             currentTag = ItemMenuTag.ID_DIEMDANH_FRAGMENT
 
@@ -117,15 +104,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnNhacNho.setOnClickListener {
-            binding.btnNhacNho.setBackgroundColor(Color.parseColor("#FF9800"))
             resetSelectorItemMenu(oldPos)
+            binding.btnNhacNho.setBackgroundColor(Color.parseColor("#FF9800"))
+
             oldPos = ItemMenuTag.ITEM_NHACNHO
             currentTag = ItemMenuTag.ID_NHACNHO_FRAGMENT
             navigateFragment(NhacNhoFragment(), ItemMenuTag.ID_NHACNHO_FRAGMENT)
         }
         binding.btnLichSu.setOnClickListener {
-            binding.btnLichSu.setBackgroundColor(Color.parseColor("#FF9800"))
             resetSelectorItemMenu(oldPos)
+            binding.btnLichSu.setBackgroundColor(Color.parseColor("#FF9800"))
             oldPos = ItemMenuTag.ITEM_LICHSU
             currentTag = ItemMenuTag.ID_LICHSU_FRAGMENT
             navigateFragment(LichSuDiemDanhFragment(), ItemMenuTag.ID_LICHSU_FRAGMENT)
@@ -154,27 +142,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setItemMenu(status: Boolean) {
-        if (!status) {
-            binding.groupButton.visibility = View.GONE
-
+    fun makeDisplayFullScreen(status: Boolean) {
+        if (status) {
+            binding.groupView.visibility = View.GONE
         } else {
-            binding.groupButton.visibility = View.VISIBLE
+            binding.groupView.visibility = View.VISIBLE
         }
     }
 
     private fun resetUI() {
         resetSelectorItemMenu(oldPos)
-        binding.editMaGV.setText("")
-        setItemMenu(false)
         removeFragment(currentTag)
-        binding.editMaGV.isEnabled=true
         oldPos = ItemMenuTag.ITEM_UNKNOWN
-        binding.btnXacNhan.text = "XÁC NHẬN"
-
     }
 
-    private fun navigateFragment(fragment: Fragment, tag: String?) {
+    fun navigateFragment(fragment: Fragment, tag: String?) {
         try {
             val ft = supportFragmentManager.beginTransaction()
             ft.replace(R.id.containerFragment, fragment, tag)
@@ -184,13 +166,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun clearFragment(){
-//        for (i in 0 until supportFragmentManager.backStackEntryCount) {
-//            supportFragmentManager.popBackStack()
-//        }
-//    }
+    fun navigateFragmentAddToBackStack(fragment: Fragment, tag: String?) {
+        try {
+            val ft = supportFragmentManager.beginTransaction()
+            ft.add(R.id.containerFragment, fragment, tag)
+            supportFragmentManager.findFragmentByTag(currentTag)?.let { ft.hide(it) }
+            ft.addToBackStack(null)
+            ft.commit()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Lỗi hiển thị màn hình", Toast.LENGTH_SHORT).show()
+        }
+    }
 
-    private fun removeFragment(tag: String?) {
+    fun removeFragment(tag: String?) {
         val fragment = supportFragmentManager.findFragmentByTag(tag)
         if (fragment != null) {
             supportFragmentManager.beginTransaction().remove(fragment).commit()
@@ -198,26 +186,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObserver() {
-        viewModel.messageAuthResponse.observe(this) {
-            when (it) {
-                is Resource.Loading -> Log.d("XacThuc", " is loading")
-                is Resource.Success -> {
-                    Toast.makeText(this, it.data?.message, Toast.LENGTH_SHORT).show()
-                    maGV = binding.editMaGV.text.toString().toInt()
-                    setItemMenu(true)
-                    binding.editMaGV.clearFocus()
-                    binding.editMaGV.isEnabled=false
-                    binding.btnXacNhan.text = "Thoát"
-                    binding.btnXacNhan.setBackgroundColor(Color.parseColor("#B3FA0303"))
-                }
-                is Resource.Error -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-//                    clearFragment()
-//                    removeFragment("DANGKY")
-//                    setItemMenu(false)
-                }
-            }
-        }
+//        viewModel.messageAuthResponse.observe(this) {
+//            when (it) {
+//                is Resource.Loading -> Log.d("XacThuc", " is loading")
+//                is Resource.Success -> {
+//                    Toast.makeText(this, it.data?.message, Toast.LENGTH_SHORT).show()
+//                    maGV = binding.editMaGV.text.toString().toInt()
+//                    setItemMenu(true)
+//                    binding.editMaGV.clearFocus()
+//                    binding.editMaGV.isEnabled=false
+//                    binding.btnXacNhan.text = "Thoát"
+//                    binding.btnXacNhan.setBackgroundColor(Color.parseColor("#B3FA0303"))
+//                }
+//                is Resource.Error -> {
+//                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+////                    clearFragment()
+////                    removeFragment("DANGKY")
+////                    setItemMenu(false)
+//                }
+//            }
+//        }
 
 //        viewModel.messageDangKyResponse.observe(this) {
 //            when (it) {
@@ -234,15 +222,30 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
+    override fun onBackPressed() {
+        val alertDialog: AlertDialog = AlertDialog.Builder(this).create()
+        alertDialog.setTitle("Thông báo")
+        alertDialog.setMessage("Bạn muốn thoát ứng dụng?")
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE,
+            "Đồng ý",
+            DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+                finish()
+            })
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE,
+        "Không",
+        DialogInterface.OnClickListener { dialog, which ->
+            dialog.dismiss()
+        })
+        alertDialog.show()
+    }
+
     override fun onResume() {
         super.onResume()
         // creating pending intent:
         if (NfcAdapter.getDefaultAdapter(this) != null) {
             val pendingIntent = PendingIntent.getActivity(
-                this,
-                0,
-                Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
-                0
+                this, 0, Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
             )
             // creating intent receiver for NFC events:
             val filter = IntentFilter()
