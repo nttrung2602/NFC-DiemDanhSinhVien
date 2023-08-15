@@ -28,10 +28,10 @@ class NetworkModule {
             this.addInterceptor(interceptor)
         }.build()
 
-//        return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).client(client)
-//            .baseUrl("http://192.168.111.190:8080/").build()
         return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).client(client)
-            .baseUrl("http://10.0.2.2:8080/").build()
+            .baseUrl("http://192.168.1.10:8080/").build()
+//        return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).client(client)
+//            .baseUrl("http://10.0.2.2:8080/").build()
     }
 
     @Provides

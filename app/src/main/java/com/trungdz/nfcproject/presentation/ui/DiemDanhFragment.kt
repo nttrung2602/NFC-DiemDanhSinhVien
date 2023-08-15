@@ -297,7 +297,6 @@ class DiemDanhFragment : Fragment() {
                 is Resource.Success -> {
                     it.data?.let { it2 ->
                         Toast.makeText(context, it2.message, Toast.LENGTH_SHORT).show()
-                        viewModel.xuatNgayHocVaTietHocCuaLTC(viewModel.maLTC)
 
                         itemThongTinSinhVienDiemDanhAdapter?.updateStatusVang(
                             posAdapter,

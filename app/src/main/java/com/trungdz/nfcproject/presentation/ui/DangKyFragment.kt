@@ -59,7 +59,7 @@ class DangKyFragment : Fragment() {
     private lateinit var binding: FragmentDangKyBinding
     private val viewModel: DangKyFragmentViewModel by viewModels()
     private val shareViewModel: ShareViewModel by activityViewModels()
-    lateinit var itemThongTinSinhVienDangKyAdapter: ThongTinSinhVienDangKyAdapter
+    var itemThongTinSinhVienDangKyAdapter: ThongTinSinhVienDangKyAdapter?=null
     var maLTC = -1
     var posAdapter = -1
     var statusButtonItemAdapter: String? = null
@@ -67,6 +67,7 @@ class DangKyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDangKyBinding.bind(view)
+//        removeObserer()
         setObserver()
         setEvent()
         val maGV = (activity as MainActivity).maGV
@@ -136,6 +137,10 @@ class DangKyFragment : Fragment() {
         })
     }
 
+    private fun removeObserer(){
+        viewModel.listLTC.removeObservers(this)
+        viewModel.listThongTinSinhVienDangKyLTC.removeObservers(this)
+    }
     private fun setObserver() {
         viewModel.listLTC.observe(viewLifecycleOwner) {
             when (it) {
@@ -234,11 +239,13 @@ class DangKyFragment : Fragment() {
             when (it) {
                 is Resource.Loading -> Log.d("DangKy", " is loading")
                 is Resource.Success -> {
-                    Toast.makeText(context, it.data?.message, Toast.LENGTH_LONG).show()
                     shareViewModel.maSV = null
-                    itemThongTinSinhVienDangKyAdapter.updateStatusBtnUpdate(
-                        statusButtonItemAdapter, posAdapter
-                    )
+                    if(itemThongTinSinhVienDangKyAdapter!= null){
+                        Toast.makeText(context, it.data?.message, Toast.LENGTH_SHORT).show()
+                        itemThongTinSinhVienDangKyAdapter?.updateStatusBtnUpdate(
+                            statusButtonItemAdapter, posAdapter
+                        )
+                    }
                 }
                 is Resource.Error -> {
                     statusButtonItemAdapter = null
